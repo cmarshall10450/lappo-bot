@@ -1,0 +1,5 @@
+[
+	{ "track": "Monza", "date": "2021-05-23", "carClass": "GT3" },
+	{ "track": "Bathurst", "date": "2021-05-25", "carClass": "GT3" },
+	{ "track": "Silverstone", "date": "2021-06-01", "carClass": "GT4" }
+]

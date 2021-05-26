@@ -1,0 +1,28 @@
+[
+	{
+		"name": "removeInactiveUsers",
+		"description": "Remove all inactive users",
+		"commandAction": "removeInactiveUsers"
+	},
+	{
+		"name": "schedule",
+		"description": "Race schedule",
+		"subCommands": [
+			{
+				"name": "list",
+				"description": "List race schedule",
+				"commandAction": "schedule/list"
+			},
+			{
+				"name": "add",
+				"description": "Add race to schedule",
+				"commandAction": "schedule/add"
+			},
+			{
+				"name": "remove",
+				"description": "Remove race from schedule",
+				"commandAction": "schedule/remove"
+			}
+		]
+	}
+]
