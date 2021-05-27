@@ -1,3 +1,3 @@
-const remove = (bot, msg, ...args) => {}
+const remove = () => {}
 
 module.exports = remove

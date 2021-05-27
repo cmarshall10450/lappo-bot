@@ -12,30 +12,25 @@ const TOKEN = process.env.TOKEN
 bot.login(TOKEN)
 
 bot.on('ready', () => {
-	console.info(`Logged in as ${bot.user.tag}!`)
+  console.info(`Logged in as ${bot.user.tag}!`)
 })
 
 bot.on('message', (msg) => {
-	const command = msg.content.replace(commandPrefix, '')
+  const command = msg.content.replace(commandPrefix, '')
 
-	console.log(msg.content.startsWith(commandPrefix))
-	console.log(bot.commandManager.hasCommand(command))
+  if (
+    msg.content.startsWith(commandPrefix) &&
+    bot.commandManager.hasCommand(command)
+  ) {
+    console.info(`Called command: ${command}`)
 
-	if (
-		msg.content.startsWith(commandPrefix) &&
-		bot.commandManager.hasCommand(command)
-	) {
-		console.info(`Called command: ${command}`)
-
-		try {
-			bot.commandManager.executeCommand(msg)
-		} catch (error) {
-			console.error(error)
-			msg.reply('there was an error trying to execute that command!')
-		}
-	} else {
-		console.log(command)
-		console.log('not a command')
-		return
-	}
+    try {
+      bot.commandManager.executeCommand(msg)
+    } catch (error) {
+      console.error(error)
+      msg.reply('there was an error trying to execute that command!')
+    }
+  } else {
+    return
+  }
 })
