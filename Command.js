@@ -5,26 +5,24 @@ class Command {
 		this.action = () => {}
 		this.args = []
 		this.description = description
-		this.helpMessage = ''
+		this.exampleArgs = []
 		this.name = name
 		this.parentCommand = null
 		this.requiredPermissions = []
 		this.requiredRoles = []
 		this.subCommands = {}
-		this.usage = ''
 	}
 
 	static fromJson(json) {
 		const {
 			args,
-			commandAction,
+			action,
 			description,
-			helpMessage,
+			example,
 			name,
 			requiredPermissions,
 			requiredRoles,
 			subCommands,
-			usage,
 		} = json
 		const command = new Command(name, description)
 
@@ -36,23 +34,13 @@ class Command {
 			)
 		}
 
-		command.setHelpMessage(helpMessage || '')
-		command.setUsage(usage || '')
+		command.setArgs(args || [])
+		command.setExampleArgs(example || [])
+		command.setRequiredPermissions(requiredPermissions || [])
+		command.setRequiredRoles(requiredRoles || [])
 
-		if (commandAction) {
-			command.setAction(require(`./commands/${commandAction}`))
-		}
-
-		if (args) {
-			command.setArgs(args)
-		}
-
-		if (requiredPermissions) {
-			command.setRequiredPermissions(requiredPermissions)
-		}
-
-		if (requiredRoles) {
-			command.setRequiredRoles(requiredRoles)
+		if (action) {
+			command.setAction(require(`./commands/${action}`))
 		}
 
 		return command
@@ -91,12 +79,8 @@ class Command {
 		return this.subCommands
 	}
 
-	getHelpMessage() {
-		return this.helpMessage
-	}
-
-	getUsage() {
-		return this.usage
+	getExampleArgs() {
+		return this.exampleArgs
 	}
 
 	getRequiredPermissions() {
@@ -137,13 +121,8 @@ class Command {
 		return this
 	}
 
-	setHelpMessage(helpMessage) {
-		this.helpMessage = helpMessage
-		return this
-	}
-
-	setUsage(usage) {
-		this.usage = usage
+	setExampleArgs(args) {
+		this.args = args
 		return this
 	}
 

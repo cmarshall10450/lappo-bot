@@ -9,7 +9,7 @@ const usage = ({ commandManager, message, args }) => {
 		.map((arg) => `<${arg}>`)
 		.join(' ')
 
-	const usageMessage = `${commandPrefix}${command.name} ${argsString}`
+	const usageMessage = `${commandString} ${argsString}`
 
 	message.reply(
 		`I've sent you a DM with an example for how to use the ${commandString} command`

@@ -2,23 +2,23 @@
 	{
 		"name": "reload",
 		"description": "Reload all commands",
-		"commandAction": "reload",
+		"action": "reload",
 		"requiredRoles": ["admin"]
 	},
 	{
 		"name": "help",
 		"description": "Show help message for a command",
-		"commandAction": "help"
+		"action": "help"
 	},
 	{
 		"name": "usage",
 		"description": "Show usage message for a command",
-		"commandAction": "usage"
+		"action": "usage"
 	},
 	{
 		"name": "removeInactiveUsers",
 		"description": "Remove all inactive users",
-		"commandAction": "removeInactiveUsers",
+		"action": "removeInactiveUsers",
 		"requiredRoles": ["admin"]
 	},
 	{
@@ -28,18 +28,20 @@
 			{
 				"name": "list",
 				"description": "List race schedule",
-				"commandAction": "schedule/list"
+				"action": "schedule/list"
 			},
 			{
 				"name": "add",
 				"description": "Add race to schedule",
-				"commandAction": "schedule/add",
-				"requiredRoles": ["admin"]
+				"action": "schedule/add",
+				"requiredRoles": ["admin"],
+				"args": ["track", "date", "carClass"],
+				"exampleArgs": ["Silverstone", "2021-04-20", "GT3"]
 			},
 			{
 				"name": "remove",
 				"description": "Remove race from schedule",
-				"commandAction": "schedule/remove",
+				"action": "schedule/remove",
 				"requiredRoles": ["admin"]
 			}
 		]
@@ -47,8 +49,9 @@
 	{
 		"name": "fuel",
 		"description": "Calculate fuel needed for a race",
-		"commandAction": "fuel",
+		"action": "fuel",
 		"args": ["raceLength", "lapTime", "fuelPerLap", "isSafe"],
+		"exampleArgs": ["45", "1:33.854", "2.65", "true"],
 		"requiredRoles": ["admin"]
 	}
 ]

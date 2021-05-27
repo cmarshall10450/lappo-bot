@@ -57,7 +57,10 @@ class CommandManager {
 			return msg.reply(INSUFFICIENT_ROLES)
 		}
 
-		if (command.getArgs().length !== args.length) {
+		if (
+			command.getArgs().length > 0 &&
+			command.getArgs().length !== args.length
+		) {
 			return msg.reply(
 				INCORRECT_NUMBER_OF_ARGUMENTS(args.length, command.getArgs().length)
 			)

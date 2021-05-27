@@ -13,14 +13,27 @@ const help = ({ commandManager, message, args }) => {
 		.map((arg) => `<${arg}>`)
 		.join(' ')
 
-	const usageMessage = `${commandPrefix}${command.getName()} ${argsString}`
+	const usageMessage = `${commandString} ${argsString}`
 
-	const helpMessage = `
-  Name: ${command.getName()}
-  Description: ${command.getDescription()}
-  Usage: ${usageMessage}
-  Required roles: ${requiredRoles}
-  Required permissions: ${requiredPermissions}`
+	const lines = [
+		`Name: ${commandString}`,
+		`Description: ${command.getDescription()}`,
+		`Usage: ${usageMessage}`,
+	]
+
+	if (command.getExampleArgs()) {
+		lines.push(
+			`Example: ${commandString} ${command.getExampleArgs().join(' ')}`
+		)
+	}
+	if (requiredRoles) {
+		lines.push(`Required roles: ${requiredRoles}`)
+	}
+	if (requiredPermissions) {
+		lines.push(`Required permissions: ${requiredPermissions}`)
+	}
+
+	const helpMessage = lines.join('\n')
 
 	message.reply(`I've sent you a DM with help for the ${commandString} command`)
 	message.member.send(`Help for ${commandString}\n${helpMessage}`)
