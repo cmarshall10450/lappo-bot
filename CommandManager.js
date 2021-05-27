@@ -45,15 +45,13 @@ class CommandManager {
 			(role) => role.name
 		)
 
-		console.log(commandRoles, memberRoles)
-
 		if (!memberPermissions || !memberPermissions.has(commandPermissions)) {
 			return message.reply(INSUFFICIENT_PERMISSIONS)
 		}
 
 		if (
 			!memberRoles ||
-			!commandRoles.every((role) => memeberRoles.includes(role))
+			!commandRoles.every((role) => memberRoles.includes(role))
 		) {
 			return message.reply(INSUFFICIENT_ROLES)
 		}

@@ -22,6 +22,7 @@ class Command {
 			helpMessage,
 			name,
 			requiredPermissions,
+			requiredRoles,
 			subCommands,
 			usage,
 		} = json
@@ -48,6 +49,10 @@ class Command {
 
 		if (requiredPermissions) {
 			command.setRequiredPermissions(requiredPermissions)
+		}
+
+		if (requiredRoles) {
+			command.setRequiredRoles(requiredRoles)
 		}
 
 		return command
@@ -162,9 +167,13 @@ class Command {
 		return this
 	}
 
-	executeAction(opts) {
-		const args = Object.fromEntries(_.zip(this.args, opts.args))
-		let params = { ...opts, args, command: this }
+	executeAction(action) {
+		const hasArgs = this.args.length > 0
+		const args = hasArgs
+			? Object.fromEntries(_.zip(this.args, action.args))
+			: action.args
+
+		let params = { ...action, args, command: this }
 		return this.action(params)
 	}
 }
