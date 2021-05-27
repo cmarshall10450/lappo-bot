@@ -1,39 +1,51 @@
 [
-  {
-    "name": "reload",
-    "description": "Reload all commands",
-    "commandAction": "reload"
-  },
-  {
-    "name": "removeInactiveUsers",
-    "description": "Remove all inactive users",
-    "commandAction": "removeInactiveUsers"
-  },
-  {
-    "name": "schedule",
-    "description": "Race schedule",
-    "subCommands": [
-      {
-        "name": "list",
-        "description": "List race schedule",
-        "commandAction": "schedule/list"
-      },
-      {
-        "name": "add",
-        "description": "Add race to schedule",
-        "commandAction": "schedule/add"
-      },
-      {
-        "name": "remove",
-        "description": "Remove race from schedule",
-        "commandAction": "schedule/remove"
-      }
-    ]
-  },
-  {
-    "name": "fuel",
-    "description": "Calculate fuel needed for a race",
-    "commandAction": "fuel",
-    "args": ["raceLength", "lapTime", "fuelPerLap", "isSafe"]
-  }
+	{
+		"name": "reload",
+		"description": "Reload all commands",
+		"commandAction": "reload"
+	},
+	{
+		"name": "help",
+		"description": "Show help message for a command",
+		"commandAction": "help"
+	},
+	{
+		"name": "usage",
+		"description": "Show usage message for a command",
+		"commandAction": "usage"
+	},
+	{
+		"name": "removeInactiveUsers",
+		"description": "Remove all inactive users",
+		"commandAction": "removeInactiveUsers"
+	},
+	{
+		"name": "schedule",
+		"description": "Race schedule",
+		"subCommands": [
+			{
+				"name": "list",
+				"description": "List race schedule",
+				"commandAction": "schedule/list"
+			},
+			{
+				"name": "add",
+				"description": "Add race to schedule",
+				"commandAction": "schedule/add"
+			},
+			{
+				"name": "remove",
+				"description": "Remove race from schedule",
+				"commandAction": "schedule/remove"
+			}
+		]
+	},
+	{
+		"name": "fuel",
+		"description": "Calculate fuel needed for a race",
+		"commandAction": "fuel",
+		"requiredPermissions": ["SEND_MESSAGES"],
+		"requiredRoles": ["admin"],
+		"args": ["raceLength", "lapTime", "fuelPerLap", "isSafe"]
+	}
 ]

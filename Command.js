@@ -1,122 +1,172 @@
 const _ = require('lodash')
 
 class Command {
-  constructor(name, description = '') {
-    this.name = name
-    this.description = description
-    this.subCommands = {}
-    this.helpMessage = ''
-    this.usage = ''
-    this.args = []
-    this.action = () => {}
-  }
+	constructor(name, description = '') {
+		this.action = () => {}
+		this.args = []
+		this.description = description
+		this.helpMessage = ''
+		this.name = name
+		this.parentCommand = null
+		this.requiredPermissions = []
+		this.requiredRoles = []
+		this.subCommands = {}
+		this.usage = ''
+	}
 
-  static fromJson(json) {
-    const {
-      name,
-      description,
-      subCommands,
-      helpMessage,
-      usage,
-      commandAction,
-      args,
-    } = json
-    const command = new Command(name, description)
+	static fromJson(json) {
+		const {
+			args,
+			commandAction,
+			description,
+			helpMessage,
+			name,
+			requiredPermissions,
+			subCommands,
+			usage,
+		} = json
+		const command = new Command(name, description)
 
-    if (subCommands) {
-      command.addSubCommands(subCommands.map((cmd) => Command.fromJson(cmd)))
-    }
+		if (subCommands) {
+			command.addSubCommands(
+				subCommands.map((cmd) =>
+					Command.fromJson(cmd).setParentCommand(command)
+				)
+			)
+		}
 
-    command.setHelpMessage(helpMessage || '')
-    command.setUsage(usage || '')
+		command.setHelpMessage(helpMessage || '')
+		command.setUsage(usage || '')
 
-    if (commandAction) {
-      command.setAction(require(`./commands/${commandAction}`))
-    }
+		if (commandAction) {
+			command.setAction(require(`./commands/${commandAction}`))
+		}
 
-    if (arguments) {
-      command.setArgs(args)
-    }
+		if (args) {
+			command.setArgs(args)
+		}
 
-    return command
-  }
+		if (requiredPermissions) {
+			command.setRequiredPermissions(requiredPermissions)
+		}
 
-  addSubCommand(command) {
-    this.subCommands = { ...this.subCommands, [command.name]: command }
-  }
+		return command
+	}
 
-  addSubCommands(commands) {
-    commands.forEach((command) => this.addSubCommand(command))
-  }
+	addSubCommand(command) {
+		this.subCommands = { ...this.subCommands, [command.name]: command }
+	}
 
-  displaySubCommands() {
-    const subCommandNames = this.subCommands.map((command) => command.name)
-    return subCommandNames.join(', ')
-  }
+	addSubCommands(commands) {
+		commands.forEach((command) => this.addSubCommand(command))
+	}
 
-  getName() {
-    return this.name
-  }
+	displaySubCommands() {
+		const subCommandNames = this.subCommands.map((command) => command.name)
+		return subCommandNames.join(', ')
+	}
 
-  getDescription() {
-    return this.description
-  }
+	getName() {
+		return this.name
+	}
 
-  getSubCommand(name) {
-    return this.subCommands[name]
-  }
+	getDescription() {
+		return this.description
+	}
 
-  getSubCommands() {
-    return this.subCommands
-  }
+	getParentCommand() {
+		return this.parentCommand
+	}
 
-  getHelpMessage() {
-    return this.helpMessage
-  }
+	getSubCommand(name) {
+		return this.subCommands[name]
+	}
 
-  getUsage() {
-    return this.usage
-  }
+	getSubCommands() {
+		return this.subCommands
+	}
 
-  getArgs() {
-    return this.args
-  }
+	getHelpMessage() {
+		return this.helpMessage
+	}
 
-  setName(name) {
-    this.name = name
-    return this
-  }
+	getUsage() {
+		return this.usage
+	}
 
-  setDescription(description) {
-    this.description = description
-    return this
-  }
+	getRequiredPermissions() {
+		return this.requiredPermissions
+	}
 
-  setHelpMessage(helpMessage) {
-    this.helpMessage = helpMessage
-    return this
-  }
+	getRequiredRoles() {
+		return this.requiredRoles
+	}
 
-  setUsage(usage) {
-    this.usage = usage
-    return this
-  }
+	getArgs() {
+		return this.args
+	}
 
-  setArgs(args) {
-    this.args = args
-    return this
-  }
+	getCommandPath() {
+		const path = [this.getName()]
+		let command = this
+		while (command && command.getParentCommand()) {
+			path.unshift(command.getParentCommand().getName())
+			command = command.getParentCommand()
+		}
 
-  setAction(action) {
-    this.action = action
-    return this
-  }
+		return path
+	}
 
-  executeAction(opts) {
-    const args = Object.fromEntries(_.zip(this.args, opts.args))
-    let params = { ...opts, args }
-    return this.action(params)
-  }
+	setName(name) {
+		this.name = name
+		return this
+	}
+
+	setDescription(description) {
+		this.description = description
+		return this
+	}
+
+	setParentCommand(command) {
+		this.parentCommand = command
+		return this
+	}
+
+	setHelpMessage(helpMessage) {
+		this.helpMessage = helpMessage
+		return this
+	}
+
+	setUsage(usage) {
+		this.usage = usage
+		return this
+	}
+
+	setArgs(args) {
+		this.args = args
+		return this
+	}
+
+	setRequiredPermissions(permissions) {
+		this.requiredPermissions = permissions
+		return this
+	}
+
+	setRequiredRoles(roles) {
+		this.requiredRoles = roles
+		return this
+	}
+
+	setAction(action) {
+		this.action = action
+		return this
+	}
+
+	executeAction(opts) {
+		const args = Object.fromEntries(_.zip(this.args, opts.args))
+		let params = { ...opts, args, command: this }
+		return this.action(params)
+	}
 }
 
 module.exports = Command
