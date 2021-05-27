@@ -2,7 +2,8 @@
 	{
 		"name": "reload",
 		"description": "Reload all commands",
-		"commandAction": "reload"
+		"commandAction": "reload",
+		"requiredRoles": ["admin"]
 	},
 	{
 		"name": "help",
@@ -17,7 +18,8 @@
 	{
 		"name": "removeInactiveUsers",
 		"description": "Remove all inactive users",
-		"commandAction": "removeInactiveUsers"
+		"commandAction": "removeInactiveUsers",
+		"requiredRoles": ["admin"]
 	},
 	{
 		"name": "schedule",
@@ -31,12 +33,14 @@
 			{
 				"name": "add",
 				"description": "Add race to schedule",
-				"commandAction": "schedule/add"
+				"commandAction": "schedule/add",
+				"requiredRoles": ["admin"]
 			},
 			{
 				"name": "remove",
 				"description": "Remove race from schedule",
-				"commandAction": "schedule/remove"
+				"commandAction": "schedule/remove",
+				"requiredRoles": ["admin"]
 			}
 		]
 	},
@@ -44,8 +48,7 @@
 		"name": "fuel",
 		"description": "Calculate fuel needed for a race",
 		"commandAction": "fuel",
-		"requiredPermissions": ["SEND_MESSAGES"],
-		"requiredRoles": ["admin"],
-		"args": ["raceLength", "lapTime", "fuelPerLap", "isSafe"]
+		"args": ["raceLength", "lapTime", "fuelPerLap", "isSafe"],
+		"requiredRoles": ["admin"]
 	}
 ]

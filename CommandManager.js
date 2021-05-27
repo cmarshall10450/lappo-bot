@@ -4,6 +4,7 @@ const Command = require('./Command')
 const {
 	INSUFFICIENT_PERMISSIONS,
 	INSUFFICIENT_ROLES,
+	INCORRECT_NUMBER_OF_ARGUMENTS,
 } = require('./errorMesages')
 
 class CommandManager {
@@ -46,14 +47,20 @@ class CommandManager {
 		)
 
 		if (!memberPermissions || !memberPermissions.has(commandPermissions)) {
-			return message.reply(INSUFFICIENT_PERMISSIONS)
+			return msg.reply(INSUFFICIENT_PERMISSIONS)
 		}
 
 		if (
 			!memberRoles ||
 			!commandRoles.every((role) => memberRoles.includes(role))
 		) {
-			return message.reply(INSUFFICIENT_ROLES)
+			return msg.reply(INSUFFICIENT_ROLES)
+		}
+
+		if (command.getArgs().length !== args.length) {
+			return msg.reply(
+				INCORRECT_NUMBER_OF_ARGUMENTS(args.length, command.getArgs().length)
+			)
 		}
 
 		command.executeAction({
