@@ -29,5 +29,11 @@
         "commandAction": "schedule/remove"
       }
     ]
+  },
+  {
+    "name": "fuel",
+    "description": "Calculate fuel needed for a race",
+    "commandAction": "fuel",
+    "args": ["raceLength", "lapTime", "fuelPerLap", "isSafe"]
   }
 ]

@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 class Command {
   constructor(name, description = '') {
     this.name = name
@@ -5,6 +7,7 @@ class Command {
     this.subCommands = {}
     this.helpMessage = ''
     this.usage = ''
+    this.args = []
     this.action = () => {}
   }
 
@@ -16,6 +19,7 @@ class Command {
       helpMessage,
       usage,
       commandAction,
+      args,
     } = json
     const command = new Command(name, description)
 
@@ -28,6 +32,10 @@ class Command {
 
     if (commandAction) {
       command.setAction(require(`./commands/${commandAction}`))
+    }
+
+    if (arguments) {
+      command.setArgs(args)
     }
 
     return command
@@ -70,6 +78,10 @@ class Command {
     return this.usage
   }
 
+  getArgs() {
+    return this.args
+  }
+
   setName(name) {
     this.name = name
     return this
@@ -90,12 +102,19 @@ class Command {
     return this
   }
 
+  setArgs(args) {
+    this.args = args
+    return this
+  }
+
   setAction(action) {
     this.action = action
     return this
   }
 
-  executeAction(params) {
+  executeAction(opts) {
+    const args = Object.fromEntries(_.zip(this.args, opts.args))
+    let params = { ...opts, args }
     return this.action(params)
   }
 }
